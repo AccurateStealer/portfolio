@@ -1,0 +1,9 @@
+---
+const { id, title } = Astro.props;
+---
+<iframe
+    src={`https://www.youtube-nocookie.com/embed/${id}`}
+    title={title}  loading="lazy"
+    allowfullscreen
+    style="width:100%; aspect-ratio:16/9; border:0;"
+></iframe>
