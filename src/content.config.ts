@@ -16,6 +16,7 @@ const project = defineCollection({
 			heroImage: z.optional(image()),
 			videoId: z.string().optional(),
 			itchUrl: z.string().optional(),
+			pdf: z.string().optional(),
 		}),
 });
 

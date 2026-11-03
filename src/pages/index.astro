@@ -2,7 +2,13 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const projects = (await getCollection('project'))
+.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+.slice(0, 2);
 ---
 
 <!doctype html>
@@ -13,47 +19,88 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<body>
 		<Header />
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to
-				build a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your{' '}
-				<code>astro.config.mjs</code> file. You can customize your setup with{' '}
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like
-				Tailwind, React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
+			<section class="intro">
+				<h1>Hi, I'm Jacob</h1>
+				<p>
+				I'm a game developer / audio designer based in Christchurch. I build a bit of everything, but my main focus is on gameplay systems and audio design,
+				mostly in Unity. Below are my latest projects.
+				</p>
+				<a class="cv" href="../../../public/downloads/jacob-barrett-cv.pdf" download>Download my CV (PDF)</a>
+			</section>
+
+			<section class="recent">
+			<h2>Recent projects</h2>
 			<ul>
+				{projects.map((project) => (
 				<li>
-					Edit this page in <code>src/pages/index.astro</code>
+					<a href={`/projects/${project.id}/`}>
+					{project.data.heroImage && (
+						<Image width={720} height={360} src={project.data.heroImage} alt="" />
+					)}
+					<h3>{project.data.title}</h3>
+					<p>{project.data.description}</p>
+					</a>
 				</li>
-				<li>
-					Edit the site header items in <code>src/components/Header.astro</code>
-				</li>
-				<li>
-					Add your name to the footer in <code>src/components/Footer.astro</code>
-				</li>
-				<li>
-					Check out the included blog posts in <code>src/content/blog/</code>
-				</li>
-				<li>
-					Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code>
-				</li>
+				))}
 			</ul>
-			<p>
-				Have fun! If you get stuck, remember to{' '}
-				<a href="https://docs.astro.build/">read the docs</a> or{' '}
-				<a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out{' '}
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a> by{' '}
-				<a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<a href="/projects/">See all projects</a>
+			</section>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.intro {
+		margin-bottom: 4rem;
+	}
+	.intro p {
+		max-width: 60ch;
+		font-size: 1.25rem;
+	}
+	.cv {
+		display: inline-block;
+		margin-top: 0.5rem;
+		padding: 0.55em 1.1em;
+		border: 1px solid var(--accent);
+		border-radius: 3px;
+		text-decoration: none;
+	}
+	.cv:hover {
+		background: var(--accent);
+		color: var(--bg);
+	}
+	.recent ul {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 2rem;
+		list-style: none;
+		margin: 1.5rem 0;
+		padding: 0;
+	}
+	.recent li a {
+		display: block;
+		color: inherit;
+		text-decoration: none;
+	}
+	.recent li img {
+		width: 100%;
+		height: auto;
+		margin-bottom: 0.8rem;
+	}
+	.recent h3 {
+		margin: 0 0 0.3rem;
+	}
+	.recent li a:hover h3 {
+		color: var(--accent);
+	}
+	.recent li p {
+		margin: 0;
+		color: rgb(var(--gray));
+	}
+	@media (max-width: 720px) {
+		.recent ul {
+		grid-template-columns: 1fr;
+		}
+	}
+</style>

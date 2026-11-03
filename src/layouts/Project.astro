@@ -9,7 +9,7 @@ import VideoEmbed from '../components/VideoEmbed.astro';
 
 type Props = CollectionEntry<'project'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage, videoId, itchUrl } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, videoId, itchUrl, pdf } = Astro.props;
 ---
 
 <html lang="en">
@@ -53,6 +53,28 @@ const { title, description, pubDate, updatedDate, heroImage, videoId, itchUrl } 
 			.last-updated-on {
 				font-style: italic;
 			}
+			.project-links {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.8rem;
+				margin: 1.4rem 0;
+			}
+			.project-links a {
+				padding: 0.5em 1em;
+				border: 1px solid var(--accent);
+				border-radius: 3px;
+				text-decoration: none;
+			}
+			.project-links a:hover {
+				background: var(--accent);
+				color: var(--bg);
+			}
+			.hero-image img {
+				max-height: 70vh;
+				width: auto;
+				max-width: 100%;
+				object-fit: contain;
+			}
 		</style>
 	</head>
 
@@ -61,7 +83,7 @@ const { title, description, pubDate, updatedDate, heroImage, videoId, itchUrl } 
 		<main>
 			<article>
 				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
+					{heroImage && <Image width={1020} src={heroImage} alt="" />}
 				</div>
 				<div class="prose">
 					<div class="title">
@@ -77,6 +99,13 @@ const { title, description, pubDate, updatedDate, heroImage, videoId, itchUrl } 
 						<hr />
 					</div>
 					{videoId && <VideoEmbed id={videoId} title={title} />}
+
+					{(itchUrl || pdf) && (
+						<div class="project-links">
+							{itchUrl && <a href={itchUrl}>Play or download on itch.io</a>}
+							{pdf && <a href={pdf} download>Download PDF</a>}
+						</div>
+						)}
 					<slot />
 				</div>
 			</article>
