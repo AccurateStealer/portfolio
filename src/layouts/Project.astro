@@ -100,10 +100,9 @@ const { title, description, pubDate, updatedDate, heroImage, videoId, itchUrl, p
 					</div>
 					{videoId && <VideoEmbed id={videoId} title={title} />}
 
-					{(itchUrl || pdf) && (
+					{(itchUrl) && (
 						<div class="project-links">
 							{itchUrl && <a href={itchUrl}>Play or download on itch.io</a>}
-							{pdf && <a href={pdf} download>Download PDF</a>}
 						</div>
 						)}
 					<slot />
